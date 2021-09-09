@@ -1,0 +1,6 @@
+## Interface: 30300
+## Author: https://t.me/boredatom
+## Title: Flash Window
+## Notes: Require patched Wow.exe file or FlashWindow() API
+
+main.lua
