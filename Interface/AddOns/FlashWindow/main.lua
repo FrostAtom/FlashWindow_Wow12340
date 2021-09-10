@@ -26,7 +26,7 @@ do
 end
 
 hooksecurefunc("StaticPopup_Show", function(name)
-    if name == "CONFIRM_BATTLEFIELD_ENTRY" or name == "FlashWindow" then
+    if name == "CONFIRM_BATTLEFIELD_ENTRY" or name == "PARTY_INVITE" then
         FlashWindow()
     end
 end)
