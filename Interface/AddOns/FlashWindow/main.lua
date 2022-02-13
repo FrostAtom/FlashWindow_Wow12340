@@ -25,6 +25,7 @@ function frame:OnInitialize()
     self:RegisterEvent("PLAYER_REGEN_DISABLED")
     self:RegisterEvent("CHAT_MSG_WHISPER")
     self:RegisterEvent("LFG_PROPOSAL_SHOW")
+    self:RegisterEvent("READY_CHECK")
 end
 
 frame:SetScript("OnEvent", function(self, event, ...)
@@ -34,12 +35,8 @@ frame:SetScript("OnEvent", function(self, event, ...)
         else
             self:OnInitialize()
         end
-	elseif event == "PLAYER_REGEN_DISABLED" then
+	elseif event == "PLAYER_REGEN_DISABLED" or event == "CHAT_MSG_WHISPER" or event == "LFG_PROPOSAL_SHOW" or event == "READY_CHECK" then
 		FlashWindow()
-    elseif event == "CHAT_MSG_WHISPER" then
-        FlashWindow()
-    elseif event == "LFG_PROPOSAL_SHOW" then
-        FlashWindow()
     end
 end)
 
