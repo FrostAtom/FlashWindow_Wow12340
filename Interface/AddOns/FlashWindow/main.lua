@@ -4,16 +4,6 @@ local ADDON_NAME = ...
 local event = event
 local FlashWindow = FlashWindow
 
--- utils
-eventName2CallbackName = setmetatable({}, {
-    __index = function(self, eventName)
-        assert(eventName and type(eventName) == "string", "Invalid argument")
-        if callbackName then return callbackName end
-        local callbackName = "On"..eventName:lower():gsub("^%a", string.upper):gsub("(_%a)", function(v) return v:sub(2, 2):upper() end)
-        self[eventName] = callbackName
-        return callbackName
-    end,
-})
 
 -- main code
 local frame = CreateFrame("frame")
@@ -31,30 +21,26 @@ hooksecurefunc("StaticPopup_Show", function(name)
     end
 end)
 
-function frame:OnPlayerRegenDisable()
-    FlashWindow()
-end
-
-function frame:OnChatMsgWhisper()
-    FlashWindow()
-end
-
 function frame:OnInitialize()
-    self:RegisterEvent("PLAYER_REGEN_DISABLE")
+    self:RegisterEvent("PLAYER_REGEN_DISABLED")
     self:RegisterEvent("CHAT_MSG_WHISPER")
+    self:RegisterEvent("LFG_PROPOSAL_SHOW")
 end
 
-function frame:OnPlayerLogon()
-    if not FlashWindow then
-        self:printf("Wow.exe patch not applied!")
-    else
-        self:OnInitialize()
+frame:SetScript("OnEvent", function(self, event, ...)
+	if event == "PLAYER_LOGIN" then
+        if not FlashWindow then
+            self:printf("Wow.exe patch not applied!")
+        else
+            self:OnInitialize()
+        end
+	elseif event == "PLAYER_REGEN_DISABLED" then
+		FlashWindow()
+    elseif event == "CHAT_MSG_WHISPER" then
+        FlashWindow()
+    elseif event == "LFG_PROPOSAL_SHOW" then
+        FlashWindow()
     end
-end
+end)
 
-function frame:OnEvent(event, ...)
-    self[event](self, eventName2CallbackName[event], ...)
-end
-
-frame:RegisterEvent("PLAYER_LOGON")
-frame:SetScript("OnEvent", frame.OnEvent)
+frame:RegisterEvent("PLAYER_LOGIN")
